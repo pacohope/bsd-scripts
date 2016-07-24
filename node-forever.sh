@@ -45,8 +45,6 @@ load_rc_config $name
 : ${forever_logfile:="/var/log/forever.log"}
 : ${forever_outfile:="/var/log/forever-out.log"}
 : ${forever_errfile:="/var/log/forever-err.log"}
-: ${forever_path:=""}
-: ${forever_command:=""}
 : ${forever_pid:="/var/run/forever.pid"}
 : ${forever_nodeenv:="PRODUCTION"}
 
