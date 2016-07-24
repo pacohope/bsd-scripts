@@ -1,22 +1,13 @@
 #!/bin/sh
+# Copyright (c) 2016 Paco Hope. <github@filter.paco.to>
+# Code licensed under GNU GENERAL PUBLIC LICENSE Version 3
 
 # PROVIDE: forever
 
-# To use:
-#  1. Copy this script to /usr/local/etc/rc.d
-#  2. Add lines to /etc/rc.conf or /etc/rc.conf.local
-#     a. forever_enable="YES"
-#     b. forever_script="/path/to/your/script"
-#  3. Optionally: add a few other config options to rc.conf
-#     a. forever_user
-#     b. forever_log="/place/where/you/want/logs"
-#     c. forever_err="/place/where/you/want/errors"
-#     d. forever_flags="additional flags to forever"
-#     e. forever_forever="/path/to/forever/script" (Default: /usr/local/bin/forever)
-#     f. forever_nodeenv="PRODUCTION"
+# For documentation see: https://github.com/pacohope/bsd-scripts/blob/master/node-forever.md
 
-# Taken from http://habrahabr.ru/post/137857/
-# Taken from https://gist.github.com/jellea/6510897
+# Adapted from https://gist.github.com/jellea/6510897
+#  which credits http://habrahabr.ru/post/137857/
 
 . /etc/rc.subr
 
