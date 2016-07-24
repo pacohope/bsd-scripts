@@ -3,7 +3,7 @@
 This is a script to launch node's [forever](https://github.com/foreverjs/forever) script at boot
 time on a [FreeBSD](https://freebsd.org/) system. When I Googled, all I found was
 [this script](https://gist.github.com/jellea/6510897), which doesn't make me happy. It doesn't really
-get FreeBSD's [`rc(8)`](https://www.freebsd.org/cgi/man.cgi?query=rc&sektion=8) subsystem and
+_get_ how FreeBSD's [`rc(8)`](https://www.freebsd.org/cgi/man.cgi?query=rc&sektion=8) subsystem and
 [`rc.subr(8)`](https://www.freebsd.org/cgi/man.cgi?query=rc.subr&sektion=8) are expected to work.
 I've taken [jellea](https://github.com/jellea)'s script and radically reworked it. I suppose
 The Right Way™ to do it would be to fork it, but this was such a significant rewrite
