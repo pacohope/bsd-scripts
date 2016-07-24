@@ -1,6 +1,12 @@
 # node-forever
 
-This is a script to launch node's 'forever' script at boot time on a FreeBSD system.
+This is a script to launch node's [forever](https://github.com/foreverjs/forever) script at boot
+time on a [FreeBSD](https://freebsd.org/) system. When I Googled, all I found was
+[this script](https://gist.github.com/jellea/6510897), which doesn't make me happy. It doesn't really
+get FreeBSD's `rc(8)` subsystem and how things are expected to work. I've taken
+[jellea](https://github.com/jellea)'s script and radically reworked it. I suppose
+The Right Way™ to do it would be to fork it, but this was such a significant rewrite
+that I didn't think that made sense.
 
 # Installation
 
@@ -27,22 +33,23 @@ forever_scriptargs="/home/paco/myApp/app -r -p 8000 -c-1"
 
 # Usage
 
-**Start the service**: `sudo service node-forever start`
-
-**Stop the service**: `sudo service node-forever stop`
-
-**Restart the service**: `sudo service node-forever restart`
-
-**Check Status**: `sudo service node-forever status`
+| Action   | Command |
+|----------|---------|
+| **Start the service** |  `sudo service node-forever start` |
+| **Stop the service** | `sudo service node-forever stop` |
+| **Restart the service** | `sudo service node-forever restart` |
+| **Check Status** | `sudo service node-forever status` |
 
 ## Warning
 
-This script runs `forever` as the `www` user, which is customary. It can be configured to run as any user at all. Be aware that it will create a bunch of files and directories and `chown` those file to that user. By default, it creates
-* /var/log/forever-err.log
-* /var/log/forever-out.log
-* /var/log/forever.log
-* /var/run/forever.pid
-* /var/run/forever (directory)
+This script runs `forever` as the `www` user, which is customary. It can be configured
+to run as any user at all. Be aware that it will create a bunch of files and directories
+and `chown` those file to that user. By default, it creates:
+* `/var/log/forever-err.log`
+* `/var/log/forever-out.log`
+* `/var/log/forever.log`
+* `/var/run/forever.pid`
+* `/var/run/forever` (directory)
 
 ## Limitation
 
