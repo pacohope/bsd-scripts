@@ -11,6 +11,20 @@ This is a script to launch node's 'forever' script at boot time on a FreeBSD sys
   * `forever_scriptargs="--args --for --your --script"`
 3. Try it out with something like `sudo service node-forever start`
 
+
+## Example Configuration
+
+This is similar to what I have in my own `/etc/rc.conf` file. It's not many lines because
+I like most of the defaults.
+
+```shell
+forever_enable="YES"
+forever_sourcedir="/home/paco/myApp"
+forever_workingdir="/home/paco/myApp"
+forever_script="node_modules/http-server/bin/http-server"
+forever_scriptargs="/home/paco/myApp/app -r -p 8000 -c-1"
+```
+
 # Usage
 
 **Start the service**: `sudo service node-forever start`
@@ -50,6 +64,7 @@ some lines in it like this:
 You could put those directly into `/etc/newsyslog.conf` or in a file in `/etc/newsyslog.conf.d`,
 but there are advantages to making it a file that you just install. And putting it parallel to
 `/usr/local/etc/rc.d` is good.
+
 
 # Complete Documentation
 | Variable   | Default | Meaning |
