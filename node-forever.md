@@ -4,12 +4,22 @@ This is a script to launch node's 'forever' script at boot time on a FreeBSD sys
 
 # Installation
 
-1. Copy the script to /usr/local/etc/rc.d
-2. Set values in /etc/rc.conf or /etc/rc.conf.local. There are a few minimum values that are required.
-  * forever_enable="YES"
-  * forever_script="/path/to/your/script"
-  * forever_scriptargs="--args --for --your --script"
-3. Try it out with something like `sudo service node-forever onestart`
+1. Copy the script to `/usr/local/etc/rc.d`. Name it `node-forever` instead of `node-forever.sh`.
+2. Set values in `/etc/rc.conf` or `/etc/rc.conf.local`. There are a few minimum values that are required.
+  * `forever_enable="YES"`
+  * `forever_script="/path/to/your/script"`
+  * `forever_scriptargs="--args --for --your --script"`
+3. Try it out with something like `sudo service node-forever start`
+
+# Usage
+
+**Start the service**: `sudo service node-forever start`
+
+**Stop the service**: `sudo service node-forever stop`
+
+**Restart the service**: `sudo service node-forever restart`
+
+**Check Status**: `sudo service node-forever status`
 
 ## Warning
 
@@ -29,24 +39,33 @@ when you invoke `stop` or `restart` on this rc script.
 
 # Optional Configurations
 
-The `FOREVER_ROOT` is set to `/var/run` by default.
+You will probably want to create a file like `/usr/local/etc/newsyslog.conf.d/node-forever` and put
+some lines in it like this:
+```shell
+/var/log/forever.log                        640  7     *    @T00  JC
+/var/log/forever-out.log                    640  7     *    @T00  JC
+/var/log/forever-err.log                    640  7     *    @T00  JC
+```
+
+You could put those directly into `/etc/newsyslog.conf` or in a file in `/etc/newsyslog.conf.d`,
+but there are advantages to making it a file that you just install. And putting it parallel to
+`/usr/local/etc/rc.d` is good.
 
 # Complete Documentation
-
-forever_enable:="NO"
-forever_user:="www"
-forever_root:="/var/run"
-forever_sourcedir:="/usr/local/lib/node_modules"
-forever_workingdir:="/usr/local/lib/node_modules"
-forever_forever:="/usr/local/bin/forever"
-forever_flags:="-a"
-forever_script:=""
-forever_scriptargs:=""
-forever_max:=""
-forever_logfile:="/var/log/forever.log"
-forever_outfile:="/var/log/forever-out.log"
-forever_errfile:="/var/log/forever-err.log"
-forever_path:=""
-forever_command:=""
-forever_pid:="/var/run/forever.pid"
-forever_nodeenv:="PRODUCTION"
+| Variable   | Default | Meaning |
+|----------|-------------|------|
+| forever_enable | "NO" | Set to "YES" to enable the daemon. Won't run otherwise. |
+| forever_user | "www"  | User that `forever` will run as.  Will own log files, too.  |
+| forever_root | "/var/run/forever"  | Where to put `forever`'s management files and sockets.  |
+| forever_sourcedir | "/usr/local/lib/node_modules"  | For `--sourceDir` |
+| forever_workingdir | "/usr/local/lib/node_modules"  | For `--workingDir` |
+| forever_forever | "/usr/local/bin/forever"  | The `forever` binary to invoke.  |
+| forever_flags | "-a"  | Any miscellaneous flags for `forever`  |
+| forever_script | ""  | The name of your script. E.g. `node_modules/http-server/bin/http-server`  |
+| forever_scriptargs | ""  | Arguments to your script. E.g., `/path/to/my/app -r -p 8000 -c-1`  |
+| forever_max | ""  | For `-m MAX`  |
+| forever_logfile | "/var/log/forever.log"  | Logs the forever output to LOGFILE. For `-l`  |
+| forever_outfile | "/var/log/forever-out.log"  | Logs stdout from child script to OUTFILE. For `-o`  |
+| forever_errfile | "/var/log/forever-err.log"  | Logs stderr from child script to ERRFILE. For `-e`  |
+| forever_pid | "/var/run/forever.pid"  | The PID file for `forever` itself, so rc.subr(8) can kill it.  |
+| forever_nodeenv | "PRODUCTION" | Sets `NODE_ENV` to this value before invoking `forever` |
