@@ -75,20 +75,23 @@ but there are advantages to making it a file that you just install. And putting 
 
 
 # Complete Documentation
+
+These are all the variables the script recognises.
+
 | Variable   | Default | Meaning |
 |----------|-------------|------|
-| forever_enable | "NO" | Set to "YES" to enable the daemon. Won't run otherwise. |
-| forever_user | "www"  | User that `forever` will run as.  Will own log files, too.  |
-| forever_root | "/var/run/forever"  | Where to put `forever`'s management files and sockets.  |
-| forever_sourcedir | "/usr/local/lib/node_modules"  | For `--sourceDir` |
-| forever_workingdir | "/usr/local/lib/node_modules"  | For `--workingDir` |
-| forever_forever | "/usr/local/bin/forever"  | The `forever` binary to invoke.  |
-| forever_flags | "-a"  | Any miscellaneous flags for `forever`  |
-| forever_script | ""  | The name of your script. E.g. `node_modules/http-server/bin/http-server`  |
-| forever_scriptargs | ""  | Arguments to your script. E.g., `/path/to/my/app -r -p 8000 -c-1`  |
-| forever_max | ""  | For `-m MAX`  |
-| forever_logfile | "/var/log/forever.log"  | Logs the forever output to LOGFILE. For `-l`  |
-| forever_outfile | "/var/log/forever-out.log"  | Logs stdout from child script to OUTFILE. For `-o`  |
-| forever_errfile | "/var/log/forever-err.log"  | Logs stderr from child script to ERRFILE. For `-e`  |
-| forever_pid | "/var/run/forever.pid"  | The PID file for `forever` itself, so rc.subr(8) can kill it.  |
-| forever_nodeenv | "PRODUCTION" | Sets `NODE_ENV` to this value before invoking `forever` |
+| `forever_enable` | NO | Set to "YES" to enable the daemon. Won't run otherwise. |
+| `forever_user` | www  | User that `forever` will run as.  Will own log files, too.  |
+| `forever_root` | /var/run/forever  | Where to put `forever`'s management files and sockets.  |
+| `forever_sourcedir` | /usr/local/lib/node_modules  | For `--sourceDir` |
+| `forever_workingdir` | /usr/local/lib/node_modules  | For `--workingDir` |
+| `forever_forever` | /usr/local/bin/forever  | The `forever` binary to invoke.  |
+| `forever_flags` | -a  | Any miscellaneous flags for `forever`  |
+| `forever_script` | (none)  | The name of your script. E.g. `node_modules/http-server/bin/http-server`  |
+| `forever_scriptargs` | (none)  | Arguments to your script. E.g., `/path/to/my/app -r -p 8000 -c-1`  |
+| `forever_max` | (none)  | For `-m MAX`  |
+| `forever_logfile` | /var/log/forever.log  | Logs the forever output to LOGFILE. For `-l`  |
+| `forever_outfile` | /var/log/forever-out.log  | Logs stdout from child script to OUTFILE. For `-o`  |
+| `forever_errfile` | /var/log/forever-err.log  | Logs stderr from child script to ERRFILE. For `-e`  |
+| `forever_pid` | /var/run/forever.pid  | The PID file for `forever` itself, so rc.subr(8) can kill it.  |
+| `forever_nodeenv` | `PRODUCTION` | Sets `NODE_ENV` to this value before invoking `forever` |
