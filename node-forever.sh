@@ -44,22 +44,31 @@ export FOREVER_ROOT="${forever_root}"
 
 start()
 {
+  # Take the options we've been given from rc.conf and put them into command
+  # line arguments for forever.
   ARGS="${forever_flags} -l ${forever_logfile} -o ${forever_outfile} -e ${forever_errfile} -p ${forever_pid}"
+
+  # Handle a few arguments that are optional.
+
+  # -m
   if [ "${forever_max}" != "" ]
   then
     ARGS="${ARGS} -m ${forever_max}"
   fi
 
+  # --sourceDir
   if [ "${forever_sourcedir}" != "" ]
   then
     ARGS="${ARGS} --sourceDir ${forever_sourcedir}"
   fi
 
+  # --workingDir
   if [ "${forever_workingdir}" != "" ]
   then
     ARGS="${ARGS} --workingDir ${forever_workingdir}"
   fi
 
+  # Launch it
   /usr/bin/su -m "${forever_user}" -c \
     "${forever_forever} start ${ARGS} ${forever_script} ${forever_scriptargs}"
 }
@@ -80,12 +89,20 @@ restart()
 }
 
 
-# Make sure the script file is defined and is readable.
-# Bail otherwise
+# This function is executed each time this script is called, whether that's for
+# 'start', 'stop', 'status', or whatever.
+# Make sure the script and directories exist. If they don't bail out.
+# Look at the log files the user has asked for and the FOREVER_ROOT that
+# they want. Make them and make them owned by the ${forever_user}.
 forever_precmd() {
+  if [ ! -d "${forever_sourcedir}" ]
+  then
+    err 3 "\"${forever_sourcedir}\" does not exist"
+  fi
+
   if [ "${forever_script}" = "" ]
   then
-    err "forever_script is undefined"
+    err 4 "forever_script is undefined"
   fi
 
   if [ ! -r "${forever_sourcedir}/${forever_script}" ]
@@ -94,8 +111,7 @@ forever_precmd() {
   fi
 
   # Only root can write log files and pid files to these locations. So we
-  # pre-create the files and chown them to the right user. I have no idea
-  # if that's the right convention or not.
+  # pre-create the files and chown them to the right user.
   [ "${forever_logfile}" != "" ] && \
     /usr/bin/touch "${forever_logfile}" && \
     /usr/sbin/chown "${forever_user}" "${forever_logfile}"
