@@ -34,7 +34,7 @@ load_rc_config $name
 # Default values
 : ${forever_enable:="NO"}
 : ${forever_user:="www"}
-: ${forever_root:="/var/run"}
+: ${forever_root:="/var/run/forever"}
 : ${forever_sourcedir:="/usr/local/lib/node_modules"}
 : ${forever_workingdir:="/usr/local/lib/node_modules"}
 : ${forever_forever:="/usr/local/bin/forever"}
@@ -66,6 +66,11 @@ start()
     ARGS="${ARGS} --sourceDir ${forever_sourcedir}"
   fi
 
+  if [ "${forever_workingdir}" != "" ]
+  then
+    ARGS="${ARGS} --workingDir ${forever_workingdir}"
+  fi
+
   /usr/bin/su -m "${forever_user}" -c \
     "${forever_forever} start ${ARGS} ${forever_script} ${forever_scriptargs}"
 }
@@ -77,12 +82,12 @@ status()
 
 stop()
 {
-  /usr/bin/su -m "${forever_user}" -c "${forever_forever} stop ${forever_script}"
+  /usr/bin/su -m "${forever_user}" -c "${forever_forever} stop 0"
 }
 
 restart()
 {
-  /usr/bin/su -m "${forever_user}" -c "${forever_forever} restart ${forever_script}"
+  /usr/bin/su -m "${forever_user}" -c "${forever_forever} restart 0"
 }
 
 
@@ -121,7 +126,7 @@ forever_precmd() {
   # Make the forever_root if it doesn't exist.
   if [ ! -d "${forever_root}" ]
   then
-    log "Making \"${forever_root}\""
+    warn "Making \"${forever_root}\""
     mkdir -p mkdir -p "${forever_root}"
   fi
 
