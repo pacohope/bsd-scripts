@@ -1,0 +1,30 @@
+#!/bin/bash
+# From https://www.zyxware.com/articles/4446/show-total-memory-usage-by-each-application-in-your-ubuntu-or-any-gnu-linux-system
+# Updated to use BSD ps command and its arguments. Generally just required updating the /bin/ps line,
+# changing the indexes for the first awk expression, and hard-coding paths to things like awk and
+# less (because I am a purist).
+/bin/ps -A -m -S -O comm,pmem,rss | /usr/bin/awk '
+  NR == 1 { print; next }
+  { a[$2] += $3; b[$2] += $4; }
+  END {
+    for (i in a) {
+      size_in_bytes = b[i] * 1024
+      split("B KB MB GB TB PB", unit)
+      human_readable = 0
+      if (size_in_bytes == 0) {
+        human_readable = 0
+        j = 0
+      }
+      else {
+        for (j = 5; human_readable < 1; j--)
+          human_readable = size_in_bytes / (2^(10*j))
+      }
+      printf "%-20s\t%s\t%.2f%s\t%s\n", i, a[i], human_readable, unit[j+2], b[i]
+    }
+  }
+' | /usr/bin/awk 'NR>1' | /usr/bin/sort -rnk4 | /usr/bin/awk '
+  BEGIN {printf "%-20s\t%%MEM\tSIZE\n", "COMMAND"} 
+  {
+    printf "%-20s\t%s\t%s\n", $1, $2, $3
+  }
+' | /usr/bin/less
